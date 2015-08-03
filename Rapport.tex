@@ -67,8 +67,8 @@
 \chapter{Introduction}
 \section{la CT: formation des données, rayons X, détecteurs}
 L'imagerie médicale est une science qui s'applique à obtenir des images des organes internes et autres éléments des organismes vivants, afin d'aider les diagnostics et les opérations chirurgicales. La tomographie est un type d'imagerie médicale dans lequel on cherche à obtenir une image 3D d'organes. L'objet de cet article est la tomographie à rayons X: elle s'effectue en faisant une série de radios à rayons X (projections) tout autour du patient. 
-Les rayons X sont des rayons énergétiques, ils passent à travers les tissus, sont atténués par ces derniers, et arrivent sur des détecteurs numériques ici, laissant une projection dans laquelle chaque pixel est la somme des atténuations des points contenus sur le rayon source-pixel considéré. On récupère donc dans un ordinateur les différentes images en rayons X projetées. Nous verrons dans la sous-section suivante comment reconstruire l'image 3D à partir des projections.
-Pour faire une image en CT, il faut donc une source de rayonsX, et un détecteur. La source à rayons X ainsi que le détecteur tournent autour de la zone à tomographier, de manière simultanée: le centre de rotation doit être situé sur l'axe détecteur/ source. Le faisceau de rayons X peut être parallèle ou bien en forme de cône. Ici nous prendrons des rayons en forme de cône. Le mouvement de la source peut être hélicoïdal ou bien une succession de rotations décalées le long de l'axe de rotation. Nous prendrons une succession de rotations, car cela permet de conserver les invariances en polaire comme nous le verrons par la suite. 
+Les rayons X sont des rayons énergétiques, ils passent à travers les tissus, sont atténués par ces derniers, et arrivent sur des détecteurs numériques ici, laissant une projection dans laquelle chaque pixel est la somme des atténuations (liée à la densité) des points contenus sur le rayon source-pixel considéré. On récupère donc dans un ordinateur les différentes images en rayons X projetées. Nous verrons dans la sous-section suivante comment reconstruire l'image 3D à partir des projections.
+Pour faire une image en CT, il faut donc une source de rayons X, et un détecteur. La source à rayons X ainsi que le détecteur tournent autour de la zone à tomographier, de manière simultanée: le centre de rotation doit être situé sur l'axe détecteur/source. Le faisceau de rayons X peut être parallèle ou bien en forme de cône. Ici nous prendrons des rayons en forme de cône. Le mouvement de la source peut être hélicoïdal ou bien une succession de rotations décalées le long de l'axe de rotation. Nous prendrons une succession de rotations, car cela permet de conserver les invariances en polaire comme nous le verrons par la suite. 
 Les données sont alors acquise sous forme d'un sinogramme: une matrice contenant chacune des projections effectuées.
 \section{La reconstruction:}
 \label{lareconstruction} 
@@ -87,9 +87,9 @@ La reconstruction est l'étape qui consiste à appliquer des opérations sur le sin
  Dans notre cas, le critère peut se mettre sous une certaine forme mathématique, dont nous détaillerons les étapes.
  Tout d'abord, il faut établir un modèle de formation des données pour le calcul de l'adéquation des mesures aux projections de l'estimée. \\
 Dans un premier temps, nous considérons que les rayons qui arrivent sur l'objet sont monochromatiques (une seule fréquence). La loi qui décrit l'absorption des rayons par l'objet est la loi de Beer-Lambert. Pour un fantôme continu, la loi de Beer-Lambert monochromatique est alors la suivante: 
-\[ \lambda_i = N_0 e^{\int{\Delta}{} -\mub(s) ds}\]  
+\[ \lambda_i = N_0 e^{\int_{\Delta}{} -\mub(s) ds}\]  
 Avec $\lambda_i$ le paramètre de la loi de Poisson qui donne le compte de photons en un pixel $i$ du détecteur, $\Delta_i$ la droite source-détecteur $i$, $N_0$ est le nombre de photons émis dans un faisceau source-détecteur (les faisceaux sont triangulaires mais ils sont tellement fins que l'on peut les considérer comme des droites).
-On peut cependant discrétiser cette loi en considérant une matrice de projection $\Pv$, qui appliquée à $\mub$ donnera un vecteur $\lambdab$ dont chaque coefficient $\lambdab_i$ approche très raisonnablement l'intégrale $N_0 \int_{\Delta_i}{} -\mub(s) ds$. La formule précédente devient alors:
+On peut cependant discrétiser cette loi en considérant une matrice de projection $\Pv$, qui appliquée à $\mub$ donnera un vecteur $\lambdab$ dont chaque coefficient approche très raisonnablement l'intégrale. La formule précédente devient alors:
 \[ \lambdab = N_0 e^{-\Pv \mub}\]  
  avec $\Pv$ la matrice de projection. Pour plus d'informations sur la matrice de projection, voir les travaux de Yves Goussard, et les sections \ref{MatriceProjection} et \ref{MatriceProjection2}.
 \paragraph{Expression du critère}
@@ -100,7 +100,7 @@ Avec:
 Donc, puisque les $\Nv_i$ sont indépendants, $  \Pr( \Nv | \mub) = \prod_{i}{\Pr( \Nv_i | \mub)} $  : 
 \[J_{adeq}(\mub) = -\log(\prod_{i} \frac{-\lambda_i ^{\Nv_i}}{\Nv_i!}e^{-\lambda_i} ) \]
 En développant et en éliminant les composantes indépendantes de $\mu$ (qui ne rentrent pas en compte dans la procédure d'optimisation):
-\[J_{adeq}(\mub) \propto \sum_{i}{}(e^{-\Pv_{(i,\cdot})\mub} + \e^{-p_i}\Pv_(i,\cdot)\mub  )\]
+\[J_{adeq}(\mub) \propto \sum_{i}{}(e^{-\Pv_{(i,\cdot)}\mub} + e^{-p_i}\Pv_{(i,\cdot)}\mub  )\]
 La justification de ce calcul, le calcul du gradient de cette fonction, et les approximations dont nous parlerons juste ci-dessous ont été faites dans les articles d'Yves Goussard comme \cite{Goussard13}. 
 \paragraph{Différents types de critère}
 Après avoir obtenu ce critère, on peut choisir de le garder tel quel, ce sera le critère Poissonnien, ou de le simplifier. On peut montrer qu'en faisant un développement limité à l'ordre 2 avec $\Nv_i \approx \lambdab_i $, on obtient un critère semblable à une erreur des moindres carrés  ( $ {\| \yb - \Pv \mub \|_{\Sigmab}}^2 $ , avec $\yb = \log(\frac{\Nv_0}{\Nv})$, où $\Nv_0$ est le nombre total de photons, et $\Sigmab$ est une matrice de pondération diagonale de la norme, dont les i-èmes coefficients diagonaux valent $e^{-y_i}$ ), ceci est ce que l'on aurait obtenu pour un modèle Gaussien de formation des données, on nommera donc cette approximation: critère Gaussien à pondération diagonale (qui peut se simplifier en critère Gaussien simple pour des très petits comptes de photons (cf. Goussard 13) (\cite{Goussard13}).
@@ -156,8 +156,16 @@ On peut désormais effectuer une tomographie de ce fantôme. Il convient donc de c
 			\item[Ouverture angulaire de la source et taille des détecteurs ](dans la direction z et dans les autres): déduit de \texttt{nDetectors, AngleTotal, RadiusFocus, RadiusDetector}.
 			On calcule l'ouverture angulaire de la source à partir de la taille d'une tranche (pour que le faisceau frappe toute la tranche), et la taille des détecteurs à partir de cette ouverture et de la distance source-détecteurs à l'aide d'une relation de Thalès, de manière à avoir une géométrie de tomographie mise à l'échelle.
 			\item 
-De plus, on fait un calcul qui va faire en sorte d'ajouter des tranches de manière à ce que le faisceau de rayons croise totallement toutes les tranches lors de la projection, et l'on soustraira les tranches ajoutées dans la reconstruction. Voir figure \ref{fig:slices} pour plus de détails.
+De plus, on fait un calcul qui va faire en sorte d'ajouter des tranches de manière à ce que le faisceau de rayons croise totallement toutes les tranches lors de la projection, et l'on soustraira les tranches ajoutées dans la reconstruction. Voir figure \ref{slices} pour plus de détails.
 \end{description}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.65]{fig1.png}
+  \caption{Rajouter des tranches pour entièrement prendre en compte celles voulues}
+  \label{slices}
+\end{figure}
+
+
 
 \subsubsection{Paramètres variables}
 \begin{description}
@@ -248,7 +256,7 @@ Une autre manière de régulariser l'image est d'utiliser le critère de régularisa
   \subfloat[Cartesian: $\lambda=1e{-1}$, \texttt{PenalGrad\_L2}]{\label{fig:contour-b}\includegraphics[scale=0.35]{cart0p1.eps}}
   \hspace{5pt}
   \subfloat[Cylindriques: $\lambda=1e{-3}$, \texttt{PenalGrad\_L2}]{\label{fig:contour-c}\includegraphics[scale=0.35]{cyl0p001.eps}}
-  \caption{Image associations for which the $\lambda$ that has the same effect}
+  \caption{Associations d'images pour lesquelles $\lambda$ a la même effet}
 \end{figure}
 \section{Le critère Poissonnien: analyse approfondie}
 Le critère Poissonnien, expliqué brièvement précédemment (cf \label{lareconstruction}), est le critère qui rend vraiment compte de la réalité physique de la formation des données. Il est donc plus susceptible de rendre des images précises et plus robustes face au bruit du détecteur. Cependant, il est plus difficile à minimiser que sa version simplifiée en critère Gaussien ou Gaussien pondéré. Avec l'augmentation de la puissance de calcul des ordinateurs, et grâce à la méthode de reconstruction en coordonnées polaires de Yves Goussard, qui accélèrent les calculs et permettent donc une plus grande complexité d'opérations, il nous a semblé pertinent de nous intéresser plus précisément à ce critère.
@@ -295,10 +303,10 @@ Pour mettre en évidence cela, on a simulé les données avec plusieurs rayons par 
 \item	Colormap pour le résultat: [0, 0.5]
 \end{itemize}
 \begin{figure}[H]
-\label{fantomesimple}
   \centering
-  \caption{schéma du fantôme généré}
   \includegraphics[scale=0.65]{shemaexpli.eps}
+    \caption{Schéma du fantôme généré}
+  \label{fantomesimple}
 \end{figure}
 %%%%%%  %%%%%          %%%%%%%			%%%%%%
 \subsubsection{Résultats: comparaison entre un seul et 5 rayons par détecteur}
@@ -328,8 +336,8 @@ $0$ &  793  &      1.39E28e4     		       &  0 & 2.7e-6  & 12   &nconv \\ [1ex]
 
 \paragraph{Indicateurs de convergence:} dernière ligne affichée par lbfgsb lors de la reconstruction: \\
 \begin{itemize}
-\item Ini: Intensité de l'image d'initialisation 
-\item Iter: Nombre d'itérations 
+\item Ini: Intensité de l'image d'initialisation (uniforme)
+\item Iter: Nombre d'itérations effectuées
 \item f(x)fin: Valeur finale du critère 
 \item Rel. desc.: Différence entre les  deux dernières valeurs du critère
 \item |Pg(x)|: Valeur absolue du gradient 
@@ -351,11 +359,11 @@ $0$ &  793  &      1.39E28e4     		       &  0 & 2.7e-6  & 12   &nconv \\ [1ex]
 \paragraph{Affirmation}
 Au cours des tests de reconstruction avec le critère Poissonnien, il nous a semblé que ce dernier était mal conditionné, ce qui cause une convergence lente sur la fin ou inexacte, faisant écho à la thèse de Benoît Hamelin paragraphe 2.3: \og{}De plus, l'algorithme de De Man et al. (2001) repose sur la modélisation de l'incertitude sur les mesures par la loi de Poisson. Le problème de reconstruction qui en résulte est mal conditionné [...]. \fg{} \cite{Hamelin09d} Nous allons détailler les test effectués qui nous poussent à affirmer cela. Pour cela, nous allons nous intéresser aux valeurs finales des indicateurs de la convergence de l'algorithme l-bgsfb. En effet l'on peut contrôler l'arrêt de l'algorithme de minimisation en fixant par exemple une tolérance à atteindre sur la norme du gradient projeté du critère: plus cette norme est petite, plus l'on force l'algorithme à converger loin. 
 \paragraph{Influence des paramètres du critère}
-Dans ces test nous changeons la tolérance demandée sur le gradient du critère. Nous verrons que pour une tolérance de $10^{-5}$, les images sont assez différentes, alors qu'il y a bien une image finale, que l'on peut obtenir si l'on force plus la convergence en diminuant la tolérance jusqu'à $10^{-8}$. Les paramètres de la simulation sont les mêmes qu'en \ref{Psarametres}, et avec un nombre de rayons par détecteurs de 8.	
+Dans ces test nous changeons la tolérance demandée sur le gradient du critère. Nous verrons que pour une tolérance de $10^{-5}$, les images sont assez différentes, alors qu'il y a bien une image finale, que l'on peut obtenir si l'on force plus la convergence en diminuant la tolérance jusqu'à $10^{-8}$. Les paramètres de la simulation sont les mêmes qu'en \ref{Parametres}, et avec un nombre de rayons par détecteurs de 8.	
 %%%%%%
 %%%%%%mettre le nb de rayons par détecteurs !  
 %%%%
-{Résultats}
+\paragraph{Résultats}
 %-----=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 \paragraph{Tolérance 1e-5}
 Pour cette tolérance, on observe surtout que les images sont assez différentes, et que l'algorithme a atteint le seuil de tolérance sans encombres.
@@ -429,20 +437,19 @@ Dans cette partie, on met en évidence l'effet de durcissement de rayon: on crée 
 \item On a "forcé la convergence" en initialisant avec une image d'intensité uniforme 0.6.
 \item On a recalé la colormap entre 0.5 et 0.7 pour voir l'évolution du profil d'intensité radial de manière optimale.
 \end{itemize}
-\paragraph{Figures}
 \begin{figure}[H]
   \centering
   \subfloat[Monochromatique]{\label{fig:contour-b}\includegraphics[scale=0.45]{imini1CrtAlmono0p001noconv.eps}}
   \hspace{5pt}
   \subfloat[Polychromatique]{\label{fig:contour-c}\includegraphics[scale=0.45]{imini1CrtAlpoly0p001noconv.eps}}
-  \caption{Cupping artifact: images}
+  \caption{Durcissement de rayon: images}
 \end{figure}
 \begin{figure}[H]
   \centering
   \subfloat[Monochromatique]{\label{fig:contour-b}\includegraphics[scale=0.45]{profilmono.eps}}
   \hspace{5pt}
   \subfloat[Polychromatique]{\label{fig:contour-c}\includegraphics[scale=0.45]{profilpoly.eps}}
-  \caption{Cupping artifact: intensity profile}
+  \caption{Durcissement de rayon: profils d'intensité}
 \end{figure}
 \paragraph{Analyse}
 On remarque que l'adoption d'un critère polychromatique permet bien d'atténuer voire de supprimer le durcissement de rayon: le profil en polychromatique est bien plus plat au niveau de la boule d'aluminium (comme il doit l'être) qu'en monochromatique.
@@ -462,21 +469,22 @@ On rappelle que l'atténuation des photons arrivant sur l'objet est donnée par la
   \caption{Source de rayons polychromatique}
 \end{figure}
 A chaque fréquence, le matériau répond de manière spécifique: le coefficient $\mu$ d'absorption dépend de la fréquence. L'expression de l'absorption devient donc: 
-\[ \lambda = \int_{E}^{} b(E) e^{-\Pv \mub(E)}  dE\]  
-où $\lambda$ est le paramètre de la loi de Poisson qui donne le compte de photons en un pixel du détecteur, b(E) est la fonction donnant le nombre de photons de la source d'énergie comprise entre E et E+dE, et $\Pv$ est la matrice de projection. Pour plus d'explications sur la matrice de projection, voir \ref{MatriceProjection} et \ref{MatriceProjection2}.     
+\[ \lambdab = \int_{E}^{} b(E) e^{-\Pv \mub(E)}  dE\]  
+où $\lambdab$ est le vecteurs des paramètres de la loi de Poisson qui donne le compte de photons en l'ensemble dess pixel du détecteur, $b(E)$ donne le nombre de photons de la source d'énergie comprise entre E et E+dE, et $\Pv$ est la matrice de projection. Pour plus d'explications sur la matrice de projection, voir \ref{MatriceProjection} et \ref{MatriceProjection2}.     
 \paragraph{Loi somme pour une approximation de spectre discret}	
-En pratique, le spectre sera échantillonné en k valeurs d'intensité $b * \alpha_k$ avec $\sum_{k}^{} \alpha_k = 1$. L'expression de l'absorption devient donc: 
-\[ \lambda = b \sum_{k}^{}  \alpha_k e^{-\Pv \mub_k} \]  
+En pratique, le spectre sera échantillonné en k valeurs d'intensité $b * \alpha_k$ avec $\sum_{k}^{} \alpha_k = 1$, correspondant aux énergies $E_k$. L'expression de l'absorption devient donc: 
+\[ \lambdab = b \sum_{k}^{}  \alpha_k e^{-\Pv \mub_k} \]  
+avec $\mub_k = \mub(E_k)$, et ici $b*\alpha_k$ est le nombre de photons de la source, d'énergie comprise entre $E_k$ et $E_{K+1}$.
 %ss ss ss ss
 \subsection{Approximation de l'atténuation en fonction de $\mu_{70}$ }
  %ss ss ss ss   
 \paragraph{Dépendance uniquement par rapport à phi et theta} 
 \label{decomp}
-Si l'on gardait l'expression précédente pour la formation des données, on aurait un problème d'optimisation où il faudrait estimer k vecteurs $\mub_k$ de taille $n = \texttt{nPixels}^2$ chacun, ce qui est beaucoup trop. Heureusement DeMan a établi empiriquement une formule qui donne les $\mub_k$ à chaque énergie d'indice k en fonction d'une énergie de référence $\mub_{70}$: l'absorption $\mub$ à 70keV. Ainsi le problème d'estimation a de nouveau autant d'inconnues que précédemment: on cherche uniquement à estimer $\mub_{70}$: un seul vecteur de taille $n$.
+Si l'on gardait l'expression précédente pour la formation des données, on aurait un problème d'optimisation où il faudrait estimer k vecteurs $\mub_k$ de taille $n = \texttt{nPixels}^2$ chacun, ce qui est beaucoup trop. Heureusement, DeMan a établi empiriquement une formule qui donne les $\mub_k$ à chaque énergie d'indice k en fonction d'une atténuation de référence $\mub_{70}$: l'atténuation $\mub$ à 70keV. Ainsi le problème d'estimation a de nouveau autant d'inconnues que précédemment: on cherche uniquement à estimer $\mub_{70}$: un seul vecteur de taille $n$.
 DeMan a obtenu ce résultat en décomposant l'atténuation $\mub_k$ en deux parties (décomposition d'Alvarez-Makcovski): une partie qui tient compte de l'effet Compton et l'autre de l'effet photoélectrique (deux effets physiques responsables de l'atténuation des rayons X).
- \[ \mub_k = \underbrace{\Phi_k \phi}_{photoélectrique} + \underbrace{\Theta_k \theta}_{Compton} \]
+ \[ \mub_k = \underbrace{\Phi_k \phi}_{photoelectrique} + \underbrace{\Theta_k \theta}_{Compton} \]
 où $\Phi_k$ et $\Theta_k$ sont des constantes dépendantes uniquement de l'énergie k, et $\phi$ et $\theta$ des fonctions dépendant uniquement du matériau atténuant, mais pas de l'énergie k. De Man s'est aperçu que les fonctions $\phi$ et $\theta$ pouvaient même s'exprimer en fonction seulement du $\mu(70keV)$ du matériau considéré.
-\[ \mub_k = \underbrace{\Phi_k \phi(\mub_{70})}_{photoélectrique} + \underbrace{\Theta_k \theta(\mub_{70})}_{Compton} \]
+\[ \mub_k = \underbrace{\Phi_k \phi(\mub_{70})}_{photoelectrique} + \underbrace{\Theta_k \theta(\mub_{70})}_{Compton} \]
 Pour plus de détails, voir l'article de De Man \cite{DeMan01} 
 \paragraph{Modèle pour phi et theta: interpolation avec les matériaux}        
 Pour obtenir l'expression des fonctions $\phi$ et $\theta$, De Man a calculé leurs valeurs pour de nombreuses valeurs de $\mu_{70}$ caractéristiques de matériaux (métal, aluminium, eau, os ... à préciser). De Man a ensuite supposé que l'on pouvait interpoler cette fonction entre les points. Il existe d'ailleurs plusieurs méthodes d'interpolation: De Man utilise une méthode linéaire, mais nous verrons par la suite que l'on peut implémenter dans Matlab une fonction qui interpolera entre les points par une hyperbole. cf \ref{modatt}
@@ -504,21 +512,21 @@ avec
 \subsubsection{Expression de son gradient}
 %sSssssssssSssssSssSsSsSsSsS
 \[ \nabla_\mu J(\mub)= (- \pb \Phi'(\mu) - \tb \Theta'(\mu)) .*  \Pv^T.(\Sv .* \yb) \]
-
+\section{Implémentation dans Matlab}
 \subsection{Introduction}
-On cherche à modéliser la source pour le critère polychromatique: la source intervient en effet dans l'expression des $\alpha_k$ et de $b$. On expose ici le modèle de ré-échantillonnage de la source développé par Benoît Hamelin. On cherche à réechantilloner la source pour donner de la flexibilité au modèle: si les calculs sont trop longs on pourra choisir un pas d'échantillonnage plus large.
-\subsection{ré-échantillonnage de la source}
+Pour l'implémentation dans Matlab, le principal enjeu consiste à modéliser la source pour le critère polychromatique: la source intervient en effet dans l'expression des $\alpha_k$ et de $b$. On expose ici le modèle de ré-échantillonnage de la source développé par Benoît Hamelin. On cherche à ré-echantilloner la source pour donner de la flexibilité au modèle: si les calculs sont trop longs on pourra choisir un pas d'échantillonnage plus large.
+\subsection{Ré-échantillonnage de la source}
 \subsubsection{Format initial de la source}
-Le fichier source utilisé par XCAT se présente sous la forme d'un tableau à deux colonnes: une colonne des énergies et une colonne des intensités correspondantes à chaque énergie, avec un pas constant. Les intensités sont en compte de photons par $cm^2$ et par seconde ( $ \texttt{quanta}/(cm^2.s)$). On considèrera donc que ce format est le format de base d'une source avant ré-échantillonnage. Les intensités de ce vecteur ne prennent pas en compte l'échantillonnage: les coefficients $\alpha_k*b$ eux en revanche portent en eux le poids de l'échantillonnage. On verra ci-dessous dans l'opération de ré-échantillonnage comment obtenir ces coefficients $\alpha_k*b$ ("source" de sortie désirée) avec une discrétisation au pas voulu.
+Le fichier source utilisé par XCAT se présente sous la forme d'un tableau à deux colonnes: une colonne des énergies et une colonne des intensités correspondantes à chaque énergie, avec un pas constant. Les intensités sont en compte de photons par $cm^2$ et par seconde ($\texttt{quanta}/(cm^2.s)$). On considèrera donc que ce format est le format de base d'une source avant ré-échantillonnage. Les intensités de ce vecteur ne prennent pas en compte l'échantillonnage: les coefficients $\alpha_k*b$ eux en revanche portent en eux le poids de l'échantillonnage. On verra ci-dessous dans l'opération de ré-échantillonnage comment obtenir ces coefficients $\alpha_k*b$ ("source" de sortie désirée) avec une discrétisation au pas voulu.
 \subsubsection{Décomposition de la source en deux parties}
 La source initiale est constituée de deux parties, une partie "lisse", croissante puis décroissante ("triangulaire"), et une partie discontinue,  des pics à deux fréquences caractéristiques. L'idée de Benoît Hamelin pour le ré-échantillonnage du spectre est de ré-échantillonner séparément ces deux parties afin de conserver le plus d'informations sur la source (contenu haute fréquence et contenu basse fréquence).\\
 Les pics de la source sont situés toujours aux mêmes fréquences caractéristiques. Benoît Hamelin a donc choisi une fenêtre fixe pour séparer les deux parties. On considère comme dans la partie "pics" les points de la source dont l'énergie est comprise entre 57 et 64 keV (première fréquence caractéristique), et 66 et 72 keV (deuxième fréquence caractéristique). Le reste des points est la partie "lisse".
 \subsubsection{Réechantilllonnage de la partie lisse, triangulaire}
 Pour ré-échantillonner cette partie, Benoît Hamelin a créé une fonction Matlab \texttt{ge\_model\_poly2line} qui interpole le vecteur source partie "lisse" précédent. On n'a ensuite plus qu'à préciser les nouvelles valeurs d'énergie dont on cherche les intensités, et former ainsi un nouveau vecteur source lisse ré-échantillonné.
-\paragraph{Interpolation de la partie triangulaire, "lisse"}
+\paragraph{Interpolation}
 La fonction d'interpolation de la partie lisse \texttt{ge\_model\_poly2line} développée par Benoît Hamelin est constituée d'un polynôme pour approximer la première partie de la courbe, et d'une droite pour approximer la fin de la courbe. Le degré du polynôme ainsi que l'intensité de bascule entre la partie polynômiale et la partie linéaire sont automatiquement calculés de manière à minimiser l'erreur quadratique avec les données (à savoir le vecteur contenant la partie triangulaire "lisse").
-\paragraph{ré-échantillonnage de la partie triangulaire}
-Une fois la partie triangulaire interpolée, on peut ré-échantillonner cette partie: il suffit de préciser le nombre d'échantillons que l'on souhaite, et les intensités correspondantes seront calculées grâce à la fonction d'interpolation \texttt{ge\_model\_poly2line}. Puisque la source ré-échantillonnée que l'on désire avoir en sortie est en réalité les $\alpha_k *b $, ce vecteur doit aussi prendre en compte le pas d'échantillonnage. Pour le trouver on prend le pas de la source initiale, le nouveau pas, et on applique la règle de trois aux intensités.
+\paragraph{Ré-échantillonnage}
+Une fois la partie triangulaire interpolée, on peut ré-échantillonner cette partie: il suffit de préciser le nombre d'échantillons que l'on souhaite, et les intensités correspondantes seront calculées grâce à la fonction d'interpolation \texttt{ge\_model\_poly2line}. Puisque la source ré-échantillonnée que l'on désire avoir en sortie est en réalité les $\alpha_k *b $, on doit aussi prendre en compte le pas d'échantillonnage. Pour le trouver on prend le pas de la source initiale, le nouveau pas, et on applique la règle de trois aux intensités.
 \subsubsection{ré-échantillonnage des pics}
 Reste maintenant à ré-échantillonner les pics. On rappelle que l'on a deux ensembles de points "pics" correspondants au voisinage des deux fréquences caractéristiques. 
 Benoît Hamelin transforme ces deux ensembles en deux valeurs: une pour chaque pic, qui est la somme de l'ensemble des points contenus dans le pic correspondant (et j'ai corrigé me semble-t-il une erreur en prenant soin de multiplier par la fréquence d'échantillonnage pour avoir des $\alpha_k *b $ comme désiré en sortie), de la manière suivante: 
@@ -548,20 +556,6 @@ Ci-dessous on verra un aperçu des courbes tracées par cette fonction de Benoît H
 \label{fig:interpol}
 \makebox[\textwidth][c]{\includegraphics[width=1.5\textwidth]{interpol.eps}}%
 \end{figure}
-
-
-
- %ss ss ss ss        
-   %ss ss ss ss   
-       
-	 \subsection{Formulation Matlab du critère et de son gradient}
-	 \subsubsection{Choix des paramètres à rentrer en argument du critère}
-		\begin{itemize}
-		\item Matrice de projection
-		\item Matériaux considérés, matériaux par défaut
-		\item Source considérée
-		\item Echantillonnage de la source désiré
- 		\end{itemize}
 		
 	
 %Ceci est l'appendice
@@ -623,7 +617,7 @@ On pose:
 \label{attenUneEnerg}
 \tilde{y}_{i, k} = \alpha_k e^{ -\Phi_k \Pv_{i, \cdot}\phi(\mub) + \Theta_k \Pv_{i, \cdot}\theta(\mub)}
 \end{equation}
-et $ \tilde{y_i} = \sum_{k=1}{K} \tilde{y}_{i, k} $ 
+et $ \tilde{y_i} = \sum_{k=1}_{K} \tilde{y}_{i, k} $ 
 \[ \frac{ \partial \tilde{y}_{i, k}}{\partial \mu_j} = - a_{i, j} (\Phi_k \phi'(\mu_j) + \Theta_k \theta'(\mu_j)) \tilde{y}_{i, k} \]
 d'où $ \frac{ \partial \tilde{y}_{i}}{\partial \mu_j} = - \phi'(\mu_j) a_{i, j} \sum_{k} \Phi_k \tilde{y}_{i, k} - \theta'(\mu_j) a_{i, j} \sum_{k}{} \Theta_k \tilde{y}_{i, k} $ 
 En utilisant \ref{attenUneEnerg}, on arrive à:
@@ -661,22 +655,21 @@ On a : $e^{ h_{i,k} } = 1+h_{i,k} + \frac{h_{i,k}^2}{2} $.\\
 d'où: 
 \[   J(\mub) = \sum_{i}^{} \{ \sum_{k}^{} \alpha_k e^{-s_i}(1+h_{i,k} + \frac{h_{i,k}^2}{2}) - \frac{y_i}{b} \log(\sum_{k}^{} \alpha_k e^{-s_i}(1+h_{i,k} + \frac{h_{i,k}^2}{2})   ) \]
 \[ J(\mub) = \sum_{i}^{} \{ \sum_{k}^{} \alpha_k e^{-s_i}(1+h_{i,k} + \frac{h_{i,k}^2}{2}) - \frac{y_i}{b} \underbrace{\log(\sum_{k}^{} \alpha_k (1+h_{i,k} + \frac{h_{i,k}^2}{2})}_{A}   ) -\frac{y_i}{b} \log(e^{-s_i})  \]
-\[ A =  \log(\sum_{k}^{} \alpha_k + \sum_{k}^{} \alpha_k ( h_{i,k} +\frac{h_{i,k}^2}{2})  \]
+\[ A =  \log(\sum_{k}^{} \alpha_k + \sum_{k}^{} \alpha_k ( h_{i,k} +\frac{h_{i,k}^2}{2}) ) \]
 \[ A =  \log(1 + \sum_{k}^{} \alpha_k ( h_{i,k} +\frac{h_{i,k}^2}{2}))  \]
 En poursuivant le développement limité:  
 \[ A =  \sum_{k}^{} \alpha_k ( h_{i,k} +\frac{h_{i,k}^2}{2} )-\frac{1}{2} (\sum_{k}^{} \alpha_k h_{i,k})^2  \] \\
 En se débarassant des termes qui ne dépendent pas de \mub, on obtient la nouvelle expression du critère approximé, avec $ s_i = \log(\frac{b}{y_i})$.
-\[ J(\mub) = \sum_{i}{} (\sum_{k}{} \alpha_k ( s_i - \Phi_k \Pv_{i, \cdot}\phi(\mub) - \Theta_k \Pv_{i, \cdot}\theta(\mub) ) )\}\]
 \[J(\mub) = \frac{b}{2} \sum_{i}{} e^{-s_i} ( s_i - (\sum_{k}{} \alpha_k \Phi_k) \Pv_{i,\cdot} \phi(\mub) - (\sum_{k}{} \alpha_k \Theta_k) \Pv_{i,\cdot} \theta(\mub))^2 \]
 De manière vectorielle, la dernière expression peut se simplifier en:
 \[   J(\mub) = \texttt{Sum}(\frac{\yb}{2} .* (\Sv)\hat{ .} 2)  \]
 avec 
-\[  \Sv = \sb - \p \Pv \Phi(\mub) - \t \Pv \Theta(\mub)   \]
+\[  \Sv = \sb - p \Pv \Phi(\mub) - t \Pv \Theta(\mub)   \]
 avec
 \[  \pb =  \sum_{k}{} \alpha_k \Phi_k  \]
 \[  \tb =  \sum_{k}{} \alpha_k \Theta_k   \]
 \section{Calcul du gradient de la neg-log-vraisemblance}
-Calcul du gradient de cette approximation
+Calcul du gradient de cette approximation//
 On pose :
 \[   J_i(\mub) = \frac{\yb_i}{2} * (\Sv_i)^2  \]
 Alors: 
