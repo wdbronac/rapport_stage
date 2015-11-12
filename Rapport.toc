@@ -1,0 +1,89 @@
+\select@language {french}
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}
+\contentsline {section}{\numberline {1.1}la CT: formation des donn\'ees, rayons X, d\'etecteurs}{2}{section.1.1}
+\contentsline {section}{\numberline {1.2}La reconstruction:}{2}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}M\'ethode g\'en\'erale}{2}{subsection.1.2.1}
+\contentsline {paragraph}{Expression du crit\`ere}{3}{section*.2}
+\contentsline {paragraph}{Diff\'erents types de crit\`ere}{4}{section*.3}
+\contentsline {subsection}{\numberline {1.2.2}Avantages de la matrice de projection polaire}{4}{subsection.1.2.2}
+\contentsline {chapter}{\numberline {2}Objectifs}{6}{chapter.2}
+\contentsline {section}{\numberline {2.1}Etude de la reconstruction it\'erative}{6}{section.2.1}
+\contentsline {section}{\numberline {2.2}Am\'elioration: prise en compte du polychromatisme}{6}{section.2.2}
+\contentsline {chapter}{\numberline {3}Outils de travail}{7}{chapter.3}
+\contentsline {section}{\numberline {3.1}Formation des donn\'ees et reconstruction (projection, tomographie) avec l'environnement Matlab: description}{7}{section.3.1}
+\contentsline {section}{\numberline {3.2}Introduction}{7}{section.3.2}
+\contentsline {section}{\numberline {3.3}Fant\^ome}{7}{section.3.3}
+\contentsline {section}{\numberline {3.4}Projections}{8}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Param\`etres propres \`a la tomographie}{8}{subsection.3.4.1}
+\contentsline {subsubsection}{Param\`etres structurels du tomographe}{8}{section*.5}
+\contentsline {subsubsection}{Param\`etres variables}{9}{section*.7}
+\contentsline {subsection}{\numberline {3.4.2}Param\`etres propres \`a la simulation num\'erique }{9}{subsection.3.4.2}
+\contentsline {section}{\numberline {3.5}Reconstruction}{10}{section.3.5}
+\contentsline {subsection}{\numberline {3.5.1}G\'eom\'etrie}{10}{subsection.3.5.1}
+\contentsline {subsection}{\numberline {3.5.2}Crit\`ere}{10}{subsection.3.5.2}
+\contentsline {subsection}{\numberline {3.5.3}Matrice de projection}{10}{subsection.3.5.3}
+\contentsline {subsection}{\numberline {3.5.4}M\'ethode d'optimisation}{10}{subsection.3.5.4}
+\contentsline {chapter}{\numberline {4}Discussions pr\'eliminaires \`a propos du crit\`ere}{12}{chapter.4}
+\contentsline {section}{\numberline {4.1}Mise en \'evidence du r\^ole des param\`etres du crit\`ere: exemple du crit\`ere Gaussien}{12}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Influence de lambda}{12}{subsection.4.1.1}
+\contentsline {paragraph}{Objectifs:}{12}{section*.8}
+\contentsline {paragraph}{G\'en\'eration des r\'esultats}{12}{section*.9}
+\contentsline {paragraph}{Analyse}{13}{section*.11}
+\contentsline {subsection}{\numberline {4.1.2}Influence du type de p\'enalisation}{14}{subsection.4.1.2}
+\contentsline {paragraph}{Objectifs:}{14}{section*.13}
+\contentsline {paragraph}{G\'en\'eration des r\'esultats:}{14}{section*.14}
+\contentsline {paragraph}{Analyse}{14}{section*.15}
+\contentsline {section}{\numberline {4.2}Le crit\`ere Poissonnien: analyse approfondie}{15}{section.4.2}
+\contentsline {paragraph}{Introduction}{15}{section*.17}
+\contentsline {paragraph}{Objectifs:}{16}{section*.18}
+\contentsline {paragraph}{G\'en\'eration des donn\'ees et param\`etres invariants}{16}{section*.19}
+\contentsline {subsection}{\numberline {4.2.1}Oscillations en Cart\'esiennes}{16}{subsection.4.2.1}
+\contentsline {subsubsection}{Param\`etres invariants de la simulation}{17}{section*.20}
+\contentsline {subsubsection}{R\'esultats: comparaison entre un seul et 5 rayons par d\'etecteur}{18}{section*.22}
+\contentsline {paragraph}{Indicateurs de convergence:}{18}{section*.25}
+\contentsline {subsubsection}{Solution:}{19}{section*.26}
+\contentsline {subsection}{\numberline {4.2.2}Conditionnement du crit\`ere Poissonnien}{19}{subsection.4.2.2}
+\contentsline {paragraph}{Affirmation}{19}{section*.27}
+\contentsline {paragraph}{Influence des param\`etres du crit\`ere}{19}{section*.28}
+\contentsline {paragraph}{R\'esultats}{19}{section*.29}
+\contentsline {paragraph}{Tol\'erance 1e-5}{19}{section*.30}
+\contentsline {paragraph}{Tol\'erance 1e-8}{20}{section*.33}
+\contentsline {subsection}{\numberline {4.2.3}Autres probl\`emes}{21}{subsection.4.2.3}
+\contentsline {subsubsection}{Absence de pr\'econditionneur en polaires}{21}{section*.36}
+\contentsline {subsection}{\numberline {4.2.4}N\'ecessit\'e d'impl\'ementer un crit\`ere polychromatique}{22}{subsection.4.2.4}
+\contentsline {paragraph}{Fant\^ome}{22}{section*.38}
+\contentsline {paragraph}{Analyse}{23}{section*.41}
+\contentsline {paragraph}{Conclusion}{23}{section*.42}
+\contentsline {chapter}{\numberline {5}Mise en place du crit\`ere polychromatique}{25}{chapter.5}
+\contentsline {section}{\numberline {5.1}Expression math\'ematique du crit\`ere polychromatique}{25}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}Loi de Beer-Lambert polychromatique}{25}{subsection.5.1.1}
+\contentsline {paragraph}{Loi int\'egrale pour un spectre continu}{25}{section*.43}
+\contentsline {paragraph}{Loi somme pour une approximation de spectre discret}{26}{section*.45}
+\contentsline {subsection}{\numberline {5.1.2}Approximation de l'att\'enuation en fonction de $\mu _{70}$ }{26}{subsection.5.1.2}
+\contentsline {paragraph}{D\'ependance uniquement par rapport \`a phi et theta}{26}{section*.46}
+\contentsline {paragraph}{Mod\`ele pour phi et theta: interpolation avec les mat\'eriaux}{26}{section*.47}
+\contentsline {subsection}{\numberline {5.1.3}Expression math\'ematique du crit\`ere et de son gradient}{27}{subsection.5.1.3}
+\contentsline {subsubsection}{Expression du crit\`ere}{27}{section*.48}
+\contentsline {subsubsection}{Expression de son gradient}{27}{section*.49}
+\contentsline {subsubsection}{Expression approxim\'ee du crit\`ere}{27}{section*.50}
+\contentsline {subsubsection}{Expression de son gradient}{27}{section*.51}
+\contentsline {section}{\numberline {5.2}Impl\'ementation dans Matlab}{28}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Introduction}{28}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}R\'e-\'echantillonnage de la source}{28}{subsection.5.2.2}
+\contentsline {subsubsection}{Format initial de la source}{28}{section*.52}
+\contentsline {subsubsection}{D\'ecomposition de la source en deux parties}{28}{section*.53}
+\contentsline {subsubsection}{R\'eechantilllonnage de la partie lisse, triangulaire}{28}{section*.54}
+\contentsline {paragraph}{Interpolation}{28}{section*.55}
+\contentsline {paragraph}{R\'e-\'echantillonnage}{29}{section*.56}
+\contentsline {subsubsection}{r\'e-\'echantillonnage des pics}{29}{section*.57}
+\contentsline {subsubsection}{R\'esum\'e}{29}{section*.58}
+\contentsline {subsection}{\numberline {5.2.3}Mod\`ele d'att\'enuation photo\'electrique et Compton}{30}{subsection.5.2.3}
+\contentsline {subsubsection}{Trac\'e des courbes}{30}{section*.60}
+\contentsline {chapter}{\numberline {A}D\'eveloppements relatifs au crit\`ere (cr\'edits: Yves Goussard)}{32}{appendix.A}
+\contentsline {section}{\numberline {A.1}Cadre monochromatique}{32}{section.A.1}
+\contentsline {section}{\numberline {A.2}Cadre polychromatique}{32}{section.A.2}
+\contentsline {section}{\numberline {A.3}Calcul de la log-vraisemblance}{33}{section.A.3}
+\contentsline {section}{\numberline {A.4}Calcul du gradient de la neg-log-vraisemblance}{33}{section.A.4}
+\contentsline {chapter}{\numberline {B}Expression simplifi\'ee du crit\`ere et de son gradient}{35}{appendix.B}
+\contentsline {section}{\numberline {B.1}Calcul de la log-vraisemblance}{35}{section.B.1}
+\contentsline {section}{\numberline {B.2}Calcul du gradient de la neg-log-vraisemblance}{36}{section.B.2}

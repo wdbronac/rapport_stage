@@ -82,7 +82,7 @@ La reconstruction est l'étape qui consiste à appliquer des opérations sur le sin
  Le critère de pénalisation, aussi appelé critère de régularisation, permet de s'assurer que l'image soit "cohérente" avec la réalité: on force les irrégularités (oscillations par exemple) à disparaître en prenant un critère de pénalisation qui croît lorsque les différences premières de l'image et/ou leur gradient sont trop élevés en certains points.
  Le critère d'adéquation mesure la vraisemblance de l'estimée à former les projections obtenues. Mathématiquement, on choisit la plupart du temps de calculer la neg log-vraisemblance du compte de photons obtenus aux projections $N$, sachant que l'on a l'objet estimé $\mub$, comme ci-dessous, avec $\Jv_{adeq}$ le critère d'adéquation.
  \begin{equation} \label{critere}
- J_{adeq} = -\ln(\Nv | \mub) 
+ J_{adeq} = -\ln(\Pr(\Nv | \mub)) 
 \end{equation}
  Dans notre cas, le critère peut se mettre sous une certaine forme mathématique, dont nous détaillerons les étapes.
  Tout d'abord, il faut établir un modèle de formation des données pour le calcul de l'adéquation des mesures aux projections de l'estimée. \\

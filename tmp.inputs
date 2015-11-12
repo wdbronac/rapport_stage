@@ -1,0 +1,3 @@
+\usepackage{pstricks,pst-node}  % Pour les petits dessins
+\usepackage{pst-plot}
+%  \psset{unit=1in}
